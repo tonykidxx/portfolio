@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String
+  order     Int       @default(0)
+  projects  Project[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  videoUrl    String
+  thumbUrl    String?
+  isVertical  Boolean  @default(false)
+  isHero      Boolean  @default(false)
+  isPublished Boolean  @default(true)
+  order       Int      @default(0)
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SiteSettings {
+  id           String   @id @default("default")
+  siteName     String   @default("CANDY MACHINE STUDIOS")
+  heroTitle    String?
+  heroSubtitle String?
+  heroVideoId  String?
+  contactEmail String?
+  contactPhone String?
+  instagramUrl String?
+  whatsappUrl  String?
+
+  // Vídeo de Apresentação (Showreel / Hero Independente das Categorias)
+  presentationEnabled    Boolean  @default(false)
+  presentationVideoUrl   String?
+  presentationTitle      String?
+  presentationSubtitle   String?
+  presentationCategory   String?  @default("Apresentação")
+  presentationThumbUrl   String?
+  presentationIsVertical Boolean  @default(false)
+
+  // Ordens das Seções na Página Inicial
+  clientsOrder   Int      @default(0)
+  photosOrder    Int      @default(88)
+  servicesOrder  Int      @default(90)
+  aboutOrder     Int      @default(91)
+  ctaOrder       Int      @default(92)
+
+  // Customização da Seção "Fotos / Galeria" (Photos)
+  photosEyebrow   String?  @default("DIREÇÃO DE FOTOGRAFIA & STILL")
+  photosTitle     String?  @default("Stills")
+  photosSubtitle  String?  @default("Capturas fotográficas com iluminação cinematográfica, olhar autoral e identidade estética.")
+
+  // Customização da Seção "O Que Fazemos" (Services)
+  servicesEyebrow  String?  @default("O QUE FAZEMOS")
+  servicesTitle    String?  @default("Da ideia à entrega final.")
+  servicesSubtitle String?  @default("Criamos peças visuais que unem direção criativa, produção e pós para marcas, artistas e projetos que querem construir imagem — não apenas preencher feed.")
+  servicesItems    String?
+
+  // Customização da Seção "Sobre / Manifesto" (About)
+  aboutEyebrow     String?  @default("CANDY MACHINE STUDIOS")
+  aboutTitle       String?  @default("IMAGEM COM INTENÇÃO.\nCONTEÚDO COM IDENTIDADE.")
+  aboutDescription String?  @default("Somos um estúdio criativo focado em transformar conceito em imagem. Trabalhamos entre direção criativa, audiovisual, conteúdo e pós-produção para construir projetos que tenham unidade estética, personalidade e valor de marca.")
+  aboutPills       String?
+
+  // Customização da Seção "Novo Projeto / CTA" (CTA)
+  ctaEyebrow       String?  @default("NOVO PROJETO")
+  ctaTitle         String?  @default("VAMOS CRIAR ALGUMA COISA QUE VALHA SER LEMBRADA?")
+  ctaDescription   String?  @default("Conte sua ideia. A gente pensa na melhor forma de transformar o conceito em imagem e colocar o projeto na rua.")
+  ctaWhatsappText  String?  @default("Falar no WhatsApp")
+  ctaInstagramText String?  @default("Ver Instagram")
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Client {
+  id         String   @id @default(cuid())
+  name       String
+  followers  String
+  imageUrl   String
+  role       String?
+  profileUrl String?
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Photo {
+  id          String   @id @default(cuid())
+  title       String?
+  subtitle    String?
+  imageUrl    String
+  category    String?  @default("Editorial")
+  order       Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
