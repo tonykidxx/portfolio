@@ -74,11 +74,11 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
   
   const wrapperClass = isVertical
     ? (ytId 
-        ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,34svh)] h-[calc(max(60svh,177.77vw)_+_300px)] sm:w-[max(100vw,45vh)] sm:h-[calc(max(80vh,177.77vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
-        : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,34svh)] h-[max(60svh,177.77vw)] sm:w-[max(100vw,45vh)] sm:h-[max(80vh,177.77vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]")
+        ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[34svh] h-[calc(60svh_+_300px)] sm:w-[max(100vw,45vh)] sm:h-[calc(max(80vh,177.77vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
+        : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[34svh] h-[60svh] sm:w-[max(100vw,45vh)] sm:h-[max(80vh,177.77vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]")
     : (ytId
-        ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,107svh)] h-[calc(max(60svh,56.25vw)_+_300px)] sm:w-[max(100vw,142.22vh)] sm:h-[calc(max(80vh,56.25vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
-        : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,107svh)] h-[max(60svh,56.25vw)] sm:w-[max(100vw,142.22vh)] sm:h-[max(80vh,56.25vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]");
+        ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[calc(60svh_+_300px)] sm:w-[max(100vw,142.22vh)] sm:h-[calc(max(80vh,56.25vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
+        : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full aspect-video sm:w-[max(100vw,142.22vh)] sm:aspect-auto sm:h-[max(80vh,56.25vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]");
 
   // Gerenciamento do player de fundo via YouTube API para loop contínuo sem corte e sem ícones de playlist (|<< || >>|)
   useEffect(() => {
@@ -184,7 +184,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
           onError={handleBgError}
           fetchPriority="high"
           loading="eager"
-          className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.85] contrast-[1.05]"
+          className="absolute inset-0 w-full h-full object-contain sm:object-cover object-center filter brightness-[0.85] contrast-[1.05]"
         />
 
         {/* Vídeo do Hero em loop sem som contínuo - Sem playlist e sem controles de centro */}
@@ -210,7 +210,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.80] contrast-[1.05] pointer-events-none"
+            className="absolute inset-0 w-full h-full object-contain sm:object-cover object-center filter brightness-[0.80] contrast-[1.05] pointer-events-none"
           />
         ) : null}
 
