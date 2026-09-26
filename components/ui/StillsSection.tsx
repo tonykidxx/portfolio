@@ -183,7 +183,6 @@ export function StillsSection({ stills = [], title = "Stills" }: StillsSectionPr
             <img
               src={still.imageUrl}
               alt={still.title || "Frame"}
-              decoding="async"
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
 
