@@ -74,15 +74,13 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
   
   const wrapperClass = isVertical
     ? (ytId 
-        ? "absolute top-[-150px] left-1/2 -translate-x-1/2 w-full h-[calc(177.77vw_+_300px)] sm:top-1/2 sm:-translate-y-1/2 sm:w-[max(100vw,45vh)] sm:h-[calc(max(80vh,177.77vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
-        : "absolute top-0 left-1/2 -translate-x-1/2 w-full aspect-[9/16] sm:top-1/2 sm:-translate-y-1/2 sm:w-[max(100vw,45vh)] sm:aspect-auto sm:h-[max(80vh,177.77vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]")
+        ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,34svh)] h-[calc(max(60svh,177.77vw)_+_300px)] sm:w-[max(100vw,45vh)] sm:h-[calc(max(80vh,177.77vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
+        : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,34svh)] h-[max(60svh,177.77vw)] sm:w-[max(100vw,45vh)] sm:h-[max(80vh,177.77vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]")
     : (ytId
-        ? "absolute top-[-150px] left-1/2 -translate-x-1/2 w-[150vw] h-[calc(84.37vw_+_300px)] sm:top-1/2 sm:-translate-y-1/2 sm:w-[max(100vw,142.22vh)] sm:h-[calc(max(80vh,56.25vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
-        : "absolute top-0 left-1/2 -translate-x-1/2 w-[150vw] aspect-video sm:top-1/2 sm:-translate-y-1/2 sm:w-[max(100vw,142.22vh)] sm:aspect-auto sm:h-[max(80vh,56.25vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]");
+        ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,107svh)] h-[calc(max(60svh,56.25vw)_+_300px)] sm:w-[max(100vw,142.22vh)] sm:h-[calc(max(80vh,56.25vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
+        : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,107svh)] h-[max(60svh,56.25vw)] sm:w-[max(100vw,142.22vh)] sm:h-[max(80vh,56.25vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]");
 
-  const mediaClass = isVertical
-    ? "absolute top-0 left-1/2 -translate-x-1/2 w-full aspect-[9/16] sm:top-1/2 sm:-translate-y-1/2 sm:w-[max(100vw,45vh)] sm:aspect-auto sm:h-[max(80vh,177.77vw)] scale-[1.05] pointer-events-none filter brightness-[0.85] contrast-[1.05] object-cover"
-    : "absolute top-0 left-1/2 -translate-x-1/2 w-[150vw] aspect-video sm:top-1/2 sm:-translate-y-1/2 sm:w-[max(100vw,142.22vh)] sm:aspect-auto sm:h-[max(80vh,56.25vw)] scale-[1.05] pointer-events-none filter brightness-[0.85] contrast-[1.05] object-cover";
+  const mediaClass = "absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.85] contrast-[1.05]";
 
   // Gerenciamento do player de fundo via YouTube API para loop contínuo sem corte e sem ícones de playlist (|<< || >>|)
   useEffect(() => {
@@ -214,7 +212,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
             loop
             muted
             playsInline
-            className={mediaClass}
+            className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.80] contrast-[1.05] pointer-events-none"
           />
         ) : null}
 
@@ -227,7 +225,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
 
       {/* Hero Content */}
       <div className="relative z-10 max-w-3xl space-y-3">
-        <h1 className="font-bebas text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-normal leading-[0.92] tracking-[1px] text-white uppercase drop-shadow-md m-0">
+        <h1 className="font-bebas text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal leading-[0.92] tracking-[1px] text-white uppercase drop-shadow-md m-0">
           {titleLines.map((line, idx) => (
             <span key={idx} className="block whitespace-nowrap">
               {line}
