@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 import { ProjectCard } from "./ProjectCard";
 import { VideoModal } from "./VideoModal";
 import { ClientHighlights } from "./ClientHighlights";
@@ -30,6 +30,52 @@ interface PortfolioSectionProps {
   photos?: any[];
   siteSettings?: any;
   onSelectProject?: (project: any) => void;
+}
+
+function CategoryScroller({ 
+  cat, 
+  onSelectProject, 
+  setSelectedProject 
+}: { 
+  cat: any, 
+  onSelectProject: any, 
+  setSelectedProject: any 
+}) {
+  const [showLeft, setShowLeft] = useState(false);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    setShowLeft(e.currentTarget.scrollLeft > 20);
+  };
+
+  return (
+    <div className="relative">
+      <div 
+        onScroll={handleScroll}
+        className="flex gap-2 sm:gap-3 overflow-x-auto px-[4%] py-3 hide-scrollbar scroll-smooth"
+      >
+        {cat.projects.map((project: any) => (
+          <ProjectCard
+            key={project.id}
+            project={project}
+            onSelect={(p) => (onSelectProject ? onSelectProject(p) : setSelectedProject(p))}
+          />
+        ))}
+      </div>
+      {/* Glassmorphism Swipe Indicator Mobile LEFT */}
+      <div className={`absolute left-2 top-1/2 -translate-y-1/2 z-30 sm:hidden pointer-events-none transition-opacity duration-300 ${showLeft ? 'opacity-100 animate-pulse' : 'opacity-0'}`}>
+        <div className="w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
+          <ChevronLeft size={20} className="text-white opacity-80" />
+        </div>
+      </div>
+
+      {/* Glassmorphism Swipe Indicator Mobile RIGHT */}
+      <div className="absolute right-2 top-1/2 -translate-y-1/2 z-30 sm:hidden pointer-events-none animate-pulse">
+        <div className="w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
+          <ChevronRight size={20} className="text-white opacity-80" />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function PortfolioSection({
@@ -153,23 +199,11 @@ export function PortfolioSection({
             </div>
 
             {/* Horizontal Scroller - starts exactly at px-[4%] */}
-            <div className="relative">
-              <div className="flex gap-2 sm:gap-3 overflow-x-auto px-[4%] py-3 hide-scrollbar scroll-smooth">
-                {cat.projects.map((project) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    onSelect={(p) => (onSelectProject ? onSelectProject(p) : setSelectedProject(p))}
-                  />
-                ))}
-              </div>
-              {/* Glassmorphism Swipe Indicator Mobile sem borda branca */}
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 z-30 sm:hidden pointer-events-none animate-pulse">
-                <div className="w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
-                  <ChevronRight size={20} className="text-white opacity-80" />
-                </div>
-              </div>
-            </div>
+            <CategoryScroller 
+              cat={cat} 
+              onSelectProject={onSelectProject} 
+              setSelectedProject={setSelectedProject} 
+            />
           </div>
         );
       })}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Users, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 
 export interface ClientItem {
@@ -19,6 +19,11 @@ interface ClientHighlightsProps {
 
 export function ClientHighlights({ clients }: ClientHighlightsProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [showLeft, setShowLeft] = useState(false);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    setShowLeft(e.currentTarget.scrollLeft > 20);
+  };
 
   if (!clients || clients.length === 0) return null;
 
@@ -66,6 +71,7 @@ export function ClientHighlights({ clients }: ClientHighlightsProps) {
       <div className="relative">
         <div
           ref={scrollRef}
+          onScroll={handleScroll}
           className="flex items-start gap-6 sm:gap-8 overflow-x-auto px-[4%] py-2 hide-scrollbar scroll-smooth"
         >
           {clients.map((client) => {
@@ -118,7 +124,14 @@ export function ClientHighlights({ clients }: ClientHighlightsProps) {
           return <div key={client.id}>{content}</div>;
         })}
         </div>
-        {/* Glassmorphism Swipe Indicator Mobile */}
+        {/* Glassmorphism Swipe Indicator Mobile LEFT */}
+        <div className={`absolute left-2 top-[48px] -translate-y-1/2 z-30 sm:hidden pointer-events-none transition-opacity duration-300 ${showLeft ? 'opacity-100 animate-pulse' : 'opacity-0'}`}>
+          <div className="w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
+            <ChevronLeft size={20} className="text-white opacity-80" />
+          </div>
+        </div>
+
+        {/* Glassmorphism Swipe Indicator Mobile RIGHT */}
         <div className="absolute right-2 top-[48px] -translate-y-1/2 z-30 sm:hidden pointer-events-none animate-pulse">
           <div className="w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
             <ChevronRight size={20} className="text-white opacity-80" />
