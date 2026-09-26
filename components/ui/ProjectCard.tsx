@@ -26,11 +26,11 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
   const ytId = getYouTubeId(project.videoUrl);
   const titleLines = splitTitleIntoTwoLines(project.title);
 
-  // Garante que a miniatura do vídeo seja sempre em alta resolução (Full HD 1080p)
+  // Usa resolução equilibrada (hqdefault 480x360) para grids, evitando baixar dezenas de imagens 1080p simultâneas
   const initialThumb = project.thumbUrl
-    ? upgradeYouTubeThumbToHighRes(project.thumbUrl)
+    ? project.thumbUrl.replace("maxresdefault.jpg", "hqdefault.jpg")
     : ytId
-    ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`
+    ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`
     : null;
 
   const [thumbSrc, setThumbSrc] = useState<string | null>(initialThumb);
@@ -82,7 +82,8 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
           src={thumbSrc}
           alt={project.title}
           onError={handleImageError}
-          className={`w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 ${
+          onLoad={(e) => e.currentTarget.classList.remove('opacity-0')}
+          className={`w-full h-full object-cover transition-all duration-700 opacity-0 group-hover:scale-105 ${
             isLetterboxed ? "scale-y-[1.34] scale-x-[1.01]" : ""
           }`}
           decoding="async"

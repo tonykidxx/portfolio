@@ -144,7 +144,8 @@ export function PhotoGallerySection({
                 src={photo.imageUrl}
                 alt={photo.title || "Fotografia"}
                 decoding="async"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
+                onLoad={(e) => e.currentTarget.classList.remove('opacity-0')}
+                className="w-full h-full object-cover transition-all duration-700 opacity-0 group-hover:scale-108"
               />
 
               {/* Overlay Escuro com Gradiente */}
