@@ -60,10 +60,16 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
     }
   };
 
+  const isVertical = heroProject?.isVertical;
   const ytId = heroProject?.videoUrl ? getYouTubeId(heroProject.videoUrl) : null;
   const vimeoId = heroProject?.videoUrl ? getVimeoId(heroProject.videoUrl) : null;
-  const isDirectVideo =
-    heroProject?.videoUrl && !ytId && !vimeoId;
+  const isDirectVideo = heroProject?.videoUrl && !ytId && !vimeoId;
+
+  // Calculamos as classes de dimensões exatas para simular object-fit: cover 
+  // com base na altura real do container (72svh no mobile, 80vh no desktop)
+  const wrapperClass = isVertical
+    ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,40.5svh)] h-[max(72svh,177.77vw)] sm:w-[max(100vw,45vh)] sm:h-[max(80vh,177.77vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
+    : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,128svh)] h-[max(72svh,56.25vw)] sm:w-[max(100vw,142.22vh)] sm:h-[max(80vh,56.25vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]";
 
   // Gerenciamento do player de fundo via YouTube API para loop contínuo sem corte e sem ícones de playlist (|<< || >>|)
   useEffect(() => {
@@ -174,17 +180,17 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
 
         {/* Vídeo do Hero em loop sem som contínuo - Sem playlist e sem controles de centro */}
         {ytId ? (
-          <div className="absolute inset-0 overflow-hidden flex items-center justify-center">
+          <div className="absolute inset-0 overflow-hidden flex items-center justify-center pointer-events-none">
             <div
               id="hero-yt-bg-player"
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180vh] min-w-[130%] h-[60vw] min-h-[130%] border-0 filter brightness-[0.80] contrast-[1.05]"
+              className={wrapperClass}
             />
           </div>
         ) : vimeoId ? (
-          <div className="absolute inset-0 overflow-hidden flex items-center justify-center">
+          <div className="absolute inset-0 overflow-hidden flex items-center justify-center pointer-events-none">
             <iframe
               src={`https://player.vimeo.com/video/${vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180vh] min-w-[130%] h-[60vw] min-h-[130%] border-0 filter brightness-[0.80] contrast-[1.05]"
+              className={wrapperClass}
               allow="autoplay; fullscreen"
             />
           </div>
@@ -195,7 +201,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.80] contrast-[1.05]"
+            className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.80] contrast-[1.05] pointer-events-none"
           />
         ) : null}
 
