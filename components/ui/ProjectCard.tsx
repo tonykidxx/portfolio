@@ -82,8 +82,7 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
           src={thumbSrc}
           alt={project.title}
           onError={handleImageError}
-          onLoad={(e) => e.currentTarget.classList.remove('opacity-0')}
-          className={`w-full h-full object-cover transition-all duration-700 opacity-0 group-hover:scale-105 ${
+          className={`w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 ${
             isLetterboxed ? "scale-y-[1.34] scale-x-[1.01]" : ""
           }`}
           decoding="async"
