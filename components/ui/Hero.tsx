@@ -74,11 +74,15 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
   
   const wrapperClass = isVertical
     ? (ytId 
-        ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[34svh] h-[calc(60svh_+_300px)] sm:w-[max(100vw,45vh)] sm:h-[calc(max(80vh,177.77vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
-        : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[34svh] h-[60svh] sm:w-[max(100vw,45vh)] sm:h-[max(80vh,177.77vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]")
+        ? "absolute top-[-150px] left-1/2 -translate-x-1/2 w-full h-[calc(177.77vw_+_300px)] sm:top-1/2 sm:-translate-y-1/2 sm:w-[max(100vw,45vh)] sm:h-[calc(max(80vh,177.77vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
+        : "absolute top-0 left-1/2 -translate-x-1/2 w-full aspect-[9/16] sm:top-1/2 sm:-translate-y-1/2 sm:w-[max(100vw,45vh)] sm:aspect-auto sm:h-[max(80vh,177.77vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]")
     : (ytId
-        ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[calc(60svh_+_300px)] sm:w-[max(100vw,142.22vh)] sm:h-[calc(max(80vh,56.25vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
-        : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full aspect-video sm:w-[max(100vw,142.22vh)] sm:aspect-auto sm:h-[max(80vh,56.25vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]");
+        ? "absolute top-[-150px] left-1/2 -translate-x-1/2 w-[150vw] h-[calc(84.37vw_+_300px)] sm:top-1/2 sm:-translate-y-1/2 sm:w-[max(100vw,142.22vh)] sm:h-[calc(max(80vh,56.25vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
+        : "absolute top-0 left-1/2 -translate-x-1/2 w-[150vw] aspect-video sm:top-1/2 sm:-translate-y-1/2 sm:w-[max(100vw,142.22vh)] sm:aspect-auto sm:h-[max(80vh,56.25vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]");
+
+  const mediaClass = isVertical
+    ? "absolute top-0 left-1/2 -translate-x-1/2 w-full aspect-[9/16] sm:top-1/2 sm:-translate-y-1/2 sm:w-[max(100vw,45vh)] sm:aspect-auto sm:h-[max(80vh,177.77vw)] scale-[1.05] pointer-events-none filter brightness-[0.85] contrast-[1.05] object-cover"
+    : "absolute top-0 left-1/2 -translate-x-1/2 w-[150vw] aspect-video sm:top-1/2 sm:-translate-y-1/2 sm:w-[max(100vw,142.22vh)] sm:aspect-auto sm:h-[max(80vh,56.25vw)] scale-[1.05] pointer-events-none filter brightness-[0.85] contrast-[1.05] object-cover";
 
   // Gerenciamento do player de fundo via YouTube API para loop contínuo sem corte e sem ícones de playlist (|<< || >>|)
   useEffect(() => {
@@ -184,7 +188,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
           onError={handleBgError}
           fetchPriority="high"
           loading="eager"
-          className="absolute inset-0 w-full h-full object-contain sm:object-cover object-center filter brightness-[0.85] contrast-[1.05]"
+          className={mediaClass}
         />
 
         {/* Vídeo do Hero em loop sem som contínuo - Sem playlist e sem controles de centro */}
@@ -210,13 +214,15 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-contain sm:object-cover object-center filter brightness-[0.80] contrast-[1.05] pointer-events-none"
+            className={mediaClass}
           />
         ) : null}
 
         {/* Gradientes cinematográficos para garantir legibilidade dos textos e botões */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#141414]/95 via-[#141414]/50 to-transparent pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/30 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent pointer-events-none" />
+        {/* Fade extra forte na metade inferior para suavizar o corte do vídeo no mobile */}
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#141414] via-[#141414]/95 to-transparent pointer-events-none" />
       </div>
 
       {/* Hero Content */}
