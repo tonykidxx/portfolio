@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { HomeView } from "@/components/ui/HomeView";
 
-export const revalidate = 0; // Dynamic server component
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const siteSettings = await prisma.siteSettings.findUnique({
