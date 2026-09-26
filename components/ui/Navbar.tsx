@@ -63,7 +63,7 @@ export function Navbar({
       : "https://www.instagram.com/candymachinestudios/";
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-[4%] py-4 sm:py-5 bg-black/40 backdrop-blur-md border-b border-white/10 transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-[4%] py-4 sm:py-5 bg-black/40 backdrop-blur-md transition-all duration-300">
       <Link href="/" className="group flex items-center">
         <span className="font-bebas text-2xl sm:text-3xl md:text-4xl tracking-[2px] text-[#e50914] uppercase leading-none transition-transform duration-200 group-hover:scale-102">
           {siteName}
