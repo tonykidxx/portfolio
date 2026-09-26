@@ -118,7 +118,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
             if (e.data === 1 && !isVideoReady) {
               setTimeout(() => {
                 setIsVideoReady(true);
-              }, 1500);
+              }, 300);
             }
             // Reinicia imediatamente ao terminar sem tela de fim
             if (e.data === 0) {
@@ -199,7 +199,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
 
         {/* Vídeo do Hero em loop sem som contínuo - Sem playlist e sem controles de centro */}
         {ytId ? (
-          <div className={`absolute inset-0 overflow-hidden flex items-center justify-center pointer-events-none z-0 transition-opacity duration-1000 ${isVideoReady ? 'opacity-100' : 'opacity-0'}`}>
+          <div className={`absolute inset-0 overflow-hidden flex items-center justify-center pointer-events-none z-0 transition-opacity duration-700 ${isVideoReady ? 'opacity-100' : 'opacity-0'}`}>
             <div
               id="hero-yt-bg-player"
               className={wrapperClass}
