@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { X, Play, Pause } from "lucide-react";
+import { X, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { getVideoEmbed, getYouTubeId, isYouTubeShorts, splitTitleIntoTwoLines } from "@/lib/video-utils";
 
 interface VideoModalProps {
@@ -34,6 +34,8 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
   const [progressPercent, setProgressPercent] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
   const [isDetectedVertical, setIsDetectedVertical] = useState<boolean | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
+  const [showMuteHint, setShowMuteHint] = useState(false);
 
   const ytId = project?.videoUrl ? getYouTubeId(project.videoUrl) : null;
   const isShorts = project?.videoUrl ? isYouTubeShorts(project.videoUrl) : false;
@@ -61,10 +63,12 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
     setDuration(0);
     setProgressPercent(0);
     setIsDetectedVertical(null);
+    setIsMuted(false);
+    setShowMuteHint(false);
     ytPlayerRef.current = null;
   }, [project]);
 
-  // Integração com a API do YouTube para controle unificado (Play, Pause, Tempo e Progresso)
+  // Integração com a API do YouTube para controle unificado (Play, Pause, Tempo, Mute e Legendas)
   useEffect(() => {
     if (!ytId) return;
 
@@ -75,12 +79,47 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
 
       try {
         ytPlayerRef.current = new (window as any).YT.Player("modal-yt-iframe", {
+          playerVars: {
+            autoplay: 1,
+            mute: 1,
+            controls: 0,
+            rel: 0,
+            modestbranding: 1,
+            playsinline: 1,
+            iv_load_policy: 3,
+            cc_load_policy: 0,
+            disablekb: 1,
+            showinfo: 0,
+            fs: 0,
+          },
           events: {
             onReady: (event: any) => {
               const dur = event.target.getDuration();
               if (dur > 0) setDuration(dur);
+
+              // 1. Remove qualquer legenda (captions) de forma definitiva
+              try {
+                event.target.unloadModule("captions");
+                event.target.setOption("captions", "track", {});
+                event.target.setOption("cc", "track", {});
+              } catch (e) {}
+
+              // 2. Garante reprodução
               event.target.playVideo();
               setIsPlaying(true);
+
+              // 3. Tenta desmutar com áudio caso o navegador permita
+              try {
+                event.target.unMute();
+                if (typeof event.target.isMuted === "function") {
+                  const m = event.target.isMuted();
+                  setIsMuted(m);
+                  if (m) setShowMuteHint(true);
+                }
+              } catch (e) {
+                setIsMuted(true);
+                setShowMuteHint(true);
+              }
             },
             onStateChange: (event: any) => {
               // 1: PLAYING, 2: PAUSED, 0: ENDED
@@ -88,6 +127,9 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
                 setIsPlaying(true);
                 const dur = event.target.getDuration();
                 if (dur > 0) setDuration(dur);
+                try {
+                  event.target.unloadModule("captions");
+                } catch (e) {}
               } else if (event.data === 2 || event.data === 0) {
                 setIsPlaying(false);
               }
@@ -109,6 +151,9 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
                 setDuration(dur);
                 setProgressPercent((curr / dur) * 100);
               }
+            }
+            if (typeof ytPlayerRef.current.isMuted === "function") {
+              setIsMuted(ytPlayerRef.current.isMuted());
             }
           } catch (e) {}
         }
@@ -141,7 +186,47 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
     };
   }, [ytId]);
 
+  const toggleMute = useCallback((e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setShowMuteHint(false);
+
+    if (ytPlayerRef.current) {
+      try {
+        if (typeof ytPlayerRef.current.isMuted === "function") {
+          if (ytPlayerRef.current.isMuted()) {
+            ytPlayerRef.current.unMute();
+            setIsMuted(false);
+          } else {
+            ytPlayerRef.current.mute();
+            setIsMuted(true);
+          }
+        }
+      } catch (e) {}
+    }
+
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  }, []);
+
   const togglePlay = useCallback(() => {
+    setShowMuteHint(false);
+
+    // Se estiver mutado no mobile, ao primeiro toque já desmuta automaticamente
+    if (isMuted) {
+      if (ytPlayerRef.current) {
+        try {
+          ytPlayerRef.current.unMute();
+          setIsMuted(false);
+        } catch (e) {}
+      }
+      if (videoRef.current) {
+        videoRef.current.muted = false;
+        setIsMuted(false);
+      }
+    }
+
     // 1. Caso vídeo direto (HTML5)
     if (videoRef.current) {
       if (videoRef.current.paused) {
@@ -181,7 +266,7 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
       );
       setIsPlaying(!isPlaying);
     }
-  }, [isPlaying]);
+  }, [isPlaying, isMuted]);
 
   const handleTimeUpdate = () => {
     if (!videoRef.current || isSeeking) return;
@@ -295,24 +380,32 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
         {/* Vídeo / Iframe com Overscan Cinematográfico que oculta os controles e logos nativos do YouTube e Vimeo */}
         <div className="absolute inset-0 overflow-hidden flex items-center justify-center bg-black">
           {ytId ? (
-            <div className="absolute inset-0 overflow-hidden flex items-center justify-center pointer-events-none select-none">
+            <div className="relative w-full h-full overflow-hidden pointer-events-none select-none flex items-center justify-center">
               <iframe
                 id="modal-yt-iframe"
-                src={`https://www.youtube-nocookie.com/embed/${ytId}?enablejsapi=1&autoplay=1&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&disablekb=1&showinfo=0&fs=0`}
+                src={`https://www.youtube-nocookie.com/embed/${ytId}?enablejsapi=1&autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&disablekb=1&showinfo=0&fs=0&cc_load_policy=0&cc_lang_pref=off&hl=pt-BR`}
                 title={project.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
-                className="w-[126%] h-[126%] max-w-none max-h-none border-0 object-cover pointer-events-none select-none"
+                tabIndex={-1}
+                aria-hidden="true"
+                className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-0 object-cover pointer-events-none select-none ${
+                  isVert
+                    ? "w-[140%] h-[125%] min-w-[140%]"
+                    : "w-[125%] h-[165%] sm:w-[115%] sm:h-[140%] min-w-[125%] sm:min-w-[115%]"
+                }`}
               />
             </div>
           ) : embed.type === "vimeo" ? (
-            <div className="absolute inset-0 overflow-hidden flex items-center justify-center pointer-events-none select-none">
+            <div className="relative w-full h-full overflow-hidden pointer-events-none select-none flex items-center justify-center">
               <iframe
                 src={`https://player.vimeo.com/video/${embed.videoId}?autoplay=1&title=0&byline=0&portrait=0`}
                 title={project.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
-                className="w-[120%] h-[120%] max-w-none max-h-none border-0 object-cover pointer-events-none select-none"
+                tabIndex={-1}
+                aria-hidden="true"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border-0 object-cover pointer-events-none select-none"
               />
             </div>
           ) : (
@@ -333,12 +426,36 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
           )}
         </div>
 
-        {/* Camada Transparente de Clique para Alternar Play/Pause */}
+        {/* Camada Transparente de Clique e Toque para Alternar Play/Pause */}
         <div
           onClick={togglePlay}
-          className="absolute inset-0 z-10 cursor-pointer"
+          onTouchStart={(e) => {
+            // Impede que toques mobile penetrem no iframe do YouTube
+            e.stopPropagation();
+          }}
+          className="absolute inset-0 z-20 cursor-pointer"
           aria-label="Alternar reprodução"
         />
+
+        {/* Botão de Som / Mudo no Canto Superior Esquerdo */}
+        <button
+          onClick={toggleMute}
+          className="absolute top-3.5 left-3.5 sm:top-5 sm:left-5 z-40 w-10 h-10 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 text-white flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer shadow-lg backdrop-blur-xs"
+          aria-label={isMuted ? "Ativar som" : "Desativar som"}
+        >
+          {isMuted ? <VolumeX size={20} strokeWidth={2.2} /> : <Volume2 size={20} strokeWidth={2.2} />}
+        </button>
+
+        {/* Notificação sutil para ativar o som se o navegador iniciar mutado */}
+        {showMuteHint && isMuted && (
+          <div
+            onClick={toggleMute}
+            className="absolute bottom-12 left-1/2 -translate-x-1/2 z-40 bg-black/85 border border-white/20 text-white text-xs px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-xl cursor-pointer backdrop-blur-sm animate-pulse whitespace-nowrap pointer-events-auto"
+          >
+            <VolumeX size={14} />
+            <span>Toque para ativar o som</span>
+          </div>
+        )}
 
         {/* Botão de Fechar no Canto Superior Direito (único botão fixo) */}
         <button
