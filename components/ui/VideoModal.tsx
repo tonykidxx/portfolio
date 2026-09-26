@@ -364,7 +364,7 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] bg-black/92 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200 select-none"
+      className="fixed inset-0 z-[100] bg-black/92 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -380,7 +380,7 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
         {/* Vídeo / Iframe com Overscan Cinematográfico que oculta os controles e logos nativos do YouTube e Vimeo */}
         <div className="absolute inset-0 overflow-hidden flex items-center justify-center bg-black">
           {ytId ? (
-            <div className="relative w-full h-full overflow-hidden pointer-events-none select-none flex items-center justify-center">
+            <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
               <iframe
                 id="modal-yt-iframe"
                 src={`https://www.youtube-nocookie.com/embed/${ytId}?enablejsapi=1&autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&disablekb=1&showinfo=0&fs=0&cc_load_policy=0&cc_lang_pref=off&hl=pt-BR`}
@@ -389,7 +389,7 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
                 allowFullScreen
                 tabIndex={-1}
                 aria-hidden="true"
-                className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-0 object-cover pointer-events-none select-none ${
+                className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-0 object-cover ${
                   isVert
                     ? "w-[140%] h-[125%] min-w-[140%]"
                     : "w-[125%] h-[165%] sm:w-[115%] sm:h-[140%] min-w-[125%] sm:min-w-[115%]"
@@ -397,7 +397,7 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
               />
             </div>
           ) : embed.type === "vimeo" ? (
-            <div className="relative w-full h-full overflow-hidden pointer-events-none select-none flex items-center justify-center">
+            <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
               <iframe
                 src={`https://player.vimeo.com/video/${embed.videoId}?autoplay=1&title=0&byline=0&portrait=0`}
                 title={project.title}
@@ -405,7 +405,7 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
                 allowFullScreen
                 tabIndex={-1}
                 aria-hidden="true"
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border-0 object-cover pointer-events-none select-none"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border-0 object-cover"
               />
             </div>
           ) : (

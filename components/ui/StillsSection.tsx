@@ -68,7 +68,7 @@ export function StillsSection({ stills = [], title = "Stills" }: StillsSectionPr
 
   const lightboxModal = activeStill ? (
     <div
-      className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 select-none animate-fade-in"
+      className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-fade-in"
       onClick={() => setLightboxIndex(null)}
       onWheel={(e) => e.stopPropagation()}
       onTouchMove={(e) => e.stopPropagation()}
@@ -126,7 +126,7 @@ export function StillsSection({ stills = [], title = "Stills" }: StillsSectionPr
         <img
           src={activeStill.imageUrl}
           alt={activeStill.title || "Still"}
-          className="max-w-full max-h-[80vh] object-contain rounded-xl sm:rounded-2xl shadow-[0_25px_70px_rgba(0,0,0,0.95)] select-none"
+          className="max-w-full max-h-[80vh] object-contain rounded-xl sm:rounded-2xl shadow-[0_25px_70px_rgba(0,0,0,0.95)]"
         />
 
         {activeStill.title && (

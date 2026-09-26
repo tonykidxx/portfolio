@@ -161,7 +161,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
   return (
     <section className="relative min-h-[72vh] sm:min-h-[80vh] flex items-end pb-20 sm:pb-24 px-[4%] bg-[#141414] overflow-hidden">
       {/* Background Video / Image Container com reprodução contínua em loop ao fundo sem som e SEM controles/ícone de pause */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+      <div className="absolute inset-0 overflow-hidden">
         {/* Pôster de alta definição (renderizado enquanto o vídeo carrega) */}
         <img
           src={bgImage}
@@ -174,17 +174,17 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
 
         {/* Vídeo do Hero em loop sem som contínuo - Sem playlist e sem controles de centro */}
         {ytId ? (
-          <div className="absolute inset-0 overflow-hidden pointer-events-none select-none flex items-center justify-center">
+          <div className="absolute inset-0 overflow-hidden flex items-center justify-center">
             <div
               id="hero-yt-bg-player"
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180vh] min-w-[130%] h-[60vw] min-h-[130%] pointer-events-none select-none border-0 filter brightness-[0.80] contrast-[1.05]"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180vh] min-w-[130%] h-[60vw] min-h-[130%] border-0 filter brightness-[0.80] contrast-[1.05]"
             />
           </div>
         ) : vimeoId ? (
-          <div className="absolute inset-0 overflow-hidden pointer-events-none select-none flex items-center justify-center">
+          <div className="absolute inset-0 overflow-hidden flex items-center justify-center">
             <iframe
               src={`https://player.vimeo.com/video/${vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180vh] min-w-[130%] h-[60vw] min-h-[130%] pointer-events-none select-none border-0 filter brightness-[0.80] contrast-[1.05]"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180vh] min-w-[130%] h-[60vw] min-h-[130%] border-0 filter brightness-[0.80] contrast-[1.05]"
               allow="autoplay; fullscreen"
             />
           </div>
@@ -195,7 +195,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.80] contrast-[1.05] pointer-events-none select-none"
+            className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.80] contrast-[1.05]"
           />
         ) : null}
 

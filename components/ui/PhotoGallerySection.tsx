@@ -236,7 +236,7 @@ export function PhotoGallerySection({
             <img
               src={activePhoto.imageUrl}
               alt={activePhoto.title || "Fotografia"}
-              className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.95)] border border-white/10 select-none"
+              className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.95)] border border-white/10"
             />
 
             {/* Legenda */}
