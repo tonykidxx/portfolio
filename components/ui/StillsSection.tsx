@@ -211,14 +211,14 @@ export function StillsSection({ stills = [], title = "Stills" }: StillsSectionPr
         </div>
         {/* Glassmorphism Swipe Indicator Mobile LEFT */}
         <div className={`absolute left-2 top-1/2 -translate-y-1/2 z-30 sm:hidden pointer-events-none transition-opacity duration-300 ${showLeft ? 'opacity-100 animate-pulse' : 'opacity-0'}`}>
-          <div className="w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
+          <div className="w-10 h-10 rounded-full bg-black/[0.35] backdrop-blur-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
             <ChevronLeft size={20} className="text-white opacity-80" />
           </div>
         </div>
 
         {/* Glassmorphism Swipe Indicator Mobile RIGHT */}
         <div className={`absolute right-2 top-1/2 -translate-y-1/2 z-30 sm:hidden pointer-events-none transition-opacity duration-300 ${showRight ? 'opacity-100 animate-pulse' : 'opacity-0'}`}>
-          <div className="w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
+          <div className="w-10 h-10 rounded-full bg-black/[0.35] backdrop-blur-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
             <ChevronRight size={20} className="text-white opacity-80" />
           </div>
         </div>
