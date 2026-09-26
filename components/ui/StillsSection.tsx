@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { X, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 
@@ -21,13 +21,22 @@ export function StillsSection({ stills = [], title = "Stills" }: StillsSectionPr
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
   const [showLeft, setShowLeft] = useState(false);
+  const [showRight, setShowRight] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    setShowLeft(e.currentTarget.scrollLeft > 20);
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setShowLeft(scrollLeft > 20);
+      setShowRight(scrollWidth > clientWidth && scrollLeft < scrollWidth - clientWidth - 20);
+    }
   };
 
   useEffect(() => {
     setMounted(true);
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
   }, []);
 
   const handlePrev = useCallback(() => {
@@ -161,7 +170,8 @@ export function StillsSection({ stills = [], title = "Stills" }: StillsSectionPr
       {/* Carrossel horizontal de frames - começa exatamente no canto esquerdo (px-[4%]) */}
       <div className="relative">
         <div 
-          onScroll={handleScroll}
+          ref={scrollRef}
+          onScroll={checkScroll}
           className="flex gap-2 sm:gap-3 overflow-x-auto px-[4%] py-3 hide-scrollbar scroll-smooth"
         >
           {stills.map((still, idx) => (
@@ -207,7 +217,7 @@ export function StillsSection({ stills = [], title = "Stills" }: StillsSectionPr
         </div>
 
         {/* Glassmorphism Swipe Indicator Mobile RIGHT */}
-        <div className="absolute right-2 top-1/2 -translate-y-1/2 z-30 sm:hidden pointer-events-none animate-pulse">
+        <div className={`absolute right-2 top-1/2 -translate-y-1/2 z-30 sm:hidden pointer-events-none transition-opacity duration-300 ${showRight ? 'opacity-100 animate-pulse' : 'opacity-0'}`}>
           <div className="w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
             <ChevronRight size={20} className="text-white opacity-80" />
           </div>
