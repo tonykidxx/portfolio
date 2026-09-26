@@ -74,11 +74,11 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
   
   const wrapperClass = isVertical
     ? (ytId 
-        ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,40.5svh)] h-[calc(max(72svh,177.77vw)_+_300px)] sm:w-[max(100vw,45vh)] sm:h-[calc(max(80vh,177.77vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
-        : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,40.5svh)] h-[max(72svh,177.77vw)] sm:w-[max(100vw,45vh)] sm:h-[max(80vh,177.77vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]")
+        ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,28svh)] h-[calc(max(50svh,177.77vw)_+_300px)] sm:w-[max(100vw,45vh)] sm:h-[calc(max(80vh,177.77vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
+        : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,28svh)] h-[max(50svh,177.77vw)] sm:w-[max(100vw,45vh)] sm:h-[max(80vh,177.77vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]")
     : (ytId
-        ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,128svh)] h-[calc(max(72svh,56.25vw)_+_300px)] sm:w-[max(100vw,142.22vh)] sm:h-[calc(max(80vh,56.25vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
-        : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,128svh)] h-[max(72svh,56.25vw)] sm:w-[max(100vw,142.22vh)] sm:h-[max(80vh,56.25vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]");
+        ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,89svh)] h-[calc(max(50svh,56.25vw)_+_300px)] sm:w-[max(100vw,142.22vh)] sm:h-[calc(max(80vh,56.25vw)_+_300px)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
+        : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,89svh)] h-[max(50svh,56.25vw)] sm:w-[max(100vw,142.22vh)] sm:h-[max(80vh,56.25vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]");
 
   // Gerenciamento do player de fundo via YouTube API para loop contínuo sem corte e sem ícones de playlist (|<< || >>|)
   useEffect(() => {
@@ -174,7 +174,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
   }, [ytId]);
 
   return (
-    <section className="relative min-h-[72vh] sm:min-h-[80vh] flex items-end pb-20 sm:pb-24 px-[4%] bg-[#141414] overflow-hidden">
+    <section className="relative min-h-[50vh] sm:min-h-[80vh] flex items-end pb-16 sm:pb-24 px-[4%] bg-[#141414] overflow-hidden">
       {/* Background Video / Image Container com reprodução contínua em loop ao fundo sem som e SEM controles/ícone de pause */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Pôster de alta definição (renderizado enquanto o vídeo carrega) */}
