@@ -45,8 +45,8 @@ function FadeInSection({ children, delay = 0, className = "" }: { children: Reac
         }
       });
     }, {
-      rootMargin: "0px 0px 150px 0px",
-      threshold: 0
+      rootMargin: "0px 0px -30px 0px", // Dispara quando a seção entra 30px na tela, garantindo que o usuário veja a animação
+      threshold: 0 // Ignora a porcentagem de altura, disparando de forma consistente para todas as seções
     });
     
     const { current } = domRef;
