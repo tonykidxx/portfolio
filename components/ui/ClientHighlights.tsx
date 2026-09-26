@@ -119,7 +119,7 @@ export function ClientHighlights({ clients }: ClientHighlightsProps) {
         })}
         </div>
         {/* Glassmorphism Swipe Indicator Mobile */}
-        <div className="absolute right-2 top-[48px] -translate-y-1/2 z-30 sm:hidden pointer-events-none">
+        <div className="absolute right-2 top-[48px] -translate-y-1/2 z-30 sm:hidden pointer-events-none animate-pulse">
           <div className="w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
             <ChevronRight size={20} className="text-white opacity-70" />
           </div>
