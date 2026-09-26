@@ -151,15 +151,12 @@ export function StillsSection({ stills = [], title = "Stills" }: StillsSectionPr
           <span className="text-[#808080] text-lg select-none leading-none">⠿</span>
           <span>{title}</span>
         </h2>
-        <div className="flex sm:hidden items-center gap-1 text-white/30 text-[10px] uppercase tracking-widest font-sans font-medium animate-pulse">
-          <span>Deslize</span>
-          <ChevronRight size={14} className="opacity-70" />
-        </div>
       </div>
 
       {/* Carrossel horizontal de frames - começa exatamente no canto esquerdo (px-[4%]) */}
-      <div className="flex gap-2 sm:gap-3 overflow-x-auto px-[4%] py-3 hide-scrollbar scroll-smooth">
-        {stills.map((still, idx) => (
+      <div className="relative">
+        <div className="flex gap-2 sm:gap-3 overflow-x-auto px-[4%] py-3 hide-scrollbar scroll-smooth">
+          {stills.map((still, idx) => (
           <div
             key={still.id}
             onClick={() => setLightboxIndex(idx)}
@@ -193,6 +190,13 @@ export function StillsSection({ stills = [], title = "Stills" }: StillsSectionPr
             )}
           </div>
         ))}
+        </div>
+        {/* Glassmorphism Swipe Indicator Mobile */}
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 z-30 sm:hidden pointer-events-none">
+          <div className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
+            <ChevronRight size={20} className="text-white opacity-90" />
+          </div>
+        </div>
       </div>
 
       {/* Modal renderizado via Portal diretamente no body com z-index absoluto */}

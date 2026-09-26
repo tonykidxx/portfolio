@@ -43,12 +43,6 @@ export function ClientHighlights({ clients }: ClientHighlightsProps) {
           </span>
         </div>
 
-        {/* Mobile Swipe Indicator */}
-        <div className="flex sm:hidden items-center gap-1 text-white/30 text-[10px] uppercase tracking-widest font-sans font-medium animate-pulse">
-          <span>Deslize</span>
-          <ChevronRight size={14} className="opacity-70" />
-        </div>
-
         {/* Scroll Controls for Desktop */}
         <div className="hidden sm:flex items-center gap-2">
           <button
@@ -69,11 +63,12 @@ export function ClientHighlights({ clients }: ClientHighlightsProps) {
       </div>
 
       {/* Highlights Circles Horizontal Track */}
-      <div
-        ref={scrollRef}
-        className="flex items-start gap-6 sm:gap-8 overflow-x-auto px-[4%] py-2 hide-scrollbar scroll-smooth"
-      >
-        {clients.map((client) => {
+      <div className="relative">
+        <div
+          ref={scrollRef}
+          className="flex items-start gap-6 sm:gap-8 overflow-x-auto px-[4%] py-2 hide-scrollbar scroll-smooth"
+        >
+          {clients.map((client) => {
           const content = (
             <div className="group flex flex-col items-center cursor-pointer flex-shrink-0 transition-transform duration-300">
               {/* Clean Circular Avatar without orange ring */}
@@ -122,6 +117,13 @@ export function ClientHighlights({ clients }: ClientHighlightsProps) {
 
           return <div key={client.id}>{content}</div>;
         })}
+        </div>
+        {/* Glassmorphism Swipe Indicator Mobile */}
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 z-30 sm:hidden pointer-events-none">
+          <div className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
+            <ChevronRight size={20} className="text-white opacity-90" />
+          </div>
+        </div>
       </div>
     </section>
   );
