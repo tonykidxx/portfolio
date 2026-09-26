@@ -196,7 +196,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
 
         {/* Vídeo do Hero em loop sem som contínuo - Sem playlist e sem controles de centro */}
         {ytId ? (
-          <div className="absolute inset-0 overflow-hidden flex items-center justify-center pointer-events-none">
+          <div className={`absolute inset-0 overflow-hidden flex items-center justify-center pointer-events-none z-0 transition-opacity duration-1000 ${isVideoReady ? 'opacity-100' : 'opacity-0'}`}>
             <div
               id="hero-yt-bg-player"
               className={wrapperClass}
@@ -225,8 +225,8 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
           />
         ) : null}
 
-        {/* BLOQUEADOR ABSOLUTO DE CLIQUES: Impede que o iOS/Safari mostre o botão de Pause ao tocar na tela */}
-        <div className="absolute inset-0 z-10 bg-transparent" style={{ touchAction: 'none' }} />
+        {/* BLOQUEADOR ABSOLUTO DE CLIQUES: Impede que o iOS/Safari/YouTube intercepte toques na tela */}
+        <div className="absolute inset-0 z-30 bg-black/0" style={{ touchAction: 'none', pointerEvents: 'auto' }} />
 
         {/* Gradientes cinematográficos para garantir legibilidade dos textos e botões */}
         <div className="absolute inset-0 z-20 bg-gradient-to-r from-[#141414]/95 via-[#141414]/50 to-transparent pointer-events-none" />
