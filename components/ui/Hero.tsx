@@ -45,6 +45,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
   // Thumbnail em altíssima definição (Full HD 1080p maxresdefault) como pôster de fundo
   const initialBg = getHighResThumbnail(heroProject?.thumbUrl, heroProject?.videoUrl);
   const [bgImage, setBgImage] = useState<string>(initialBg);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   useEffect(() => {
     setBgImage(getHighResThumbnail(heroProject?.thumbUrl, heroProject?.videoUrl));
@@ -112,6 +113,10 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
             e.target.playVideo();
           },
           onStateChange: (e: any) => {
+            // Remove o thumbnail/pôster somente quando o vídeo de fato começou a rodar (estado 1 = PLAYING)
+            if (e.data === 1) {
+              setIsVideoReady(true);
+            }
             // Reinicia imediatamente ao terminar sem tela de fim
             if (e.data === 0) {
               e.target.seekTo(0);
@@ -186,7 +191,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
           onError={handleBgError}
           fetchPriority="high"
           loading="eager"
-          className={mediaClass}
+          className={`${mediaClass} z-10 transition-opacity duration-1000 ${isVideoReady ? 'opacity-0' : 'opacity-100'}`}
         />
 
         {/* Vídeo do Hero em loop sem som contínuo - Sem playlist e sem controles de centro */}
