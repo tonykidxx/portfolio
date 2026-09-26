@@ -77,6 +77,7 @@ export function ClientHighlights({ clients }: ClientHighlightsProps) {
                   alt={client.name}
                   className="w-full h-full rounded-full object-cover"
                   loading="eager"
+                  fetchPriority="high"
                 />
               </div>
 

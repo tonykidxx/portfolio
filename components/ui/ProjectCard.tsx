@@ -86,6 +86,7 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
             isLetterboxed ? "scale-y-[1.34] scale-x-[1.01]" : ""
           }`}
           loading="eager"
+          fetchPriority="high"
         />
       ) : project.videoUrl ? (
         <video
