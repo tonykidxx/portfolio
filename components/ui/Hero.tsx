@@ -114,8 +114,11 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
           },
           onStateChange: (e: any) => {
             // Remove o thumbnail/pôster somente quando o vídeo de fato começou a rodar (estado 1 = PLAYING)
-            if (e.data === 1) {
-              setIsVideoReady(true);
+            // Usa um delay de 1.5s para garantir que a UI feia do YouTube (Play, título, etc) suma completamente antes de revelar o vídeo
+            if (e.data === 1 && !isVideoReady) {
+              setTimeout(() => {
+                setIsVideoReady(true);
+              }, 1500);
             }
             // Reinicia imediatamente ao terminar sem tela de fim
             if (e.data === 0) {
