@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, ReactNode } from "react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { ProjectCard } from "./ProjectCard";
 import { VideoModal } from "./VideoModal";
@@ -30,6 +30,44 @@ interface PortfolioSectionProps {
   photos?: any[];
   siteSettings?: any;
   onSelectProject?: (project: any) => void;
+}
+
+function FadeInSection({ children, delay = 0, className = "" }: { children: ReactNode, delay?: number, className?: string }) {
+  const [isVisible, setVisible] = useState(false);
+  const domRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          if (domRef.current) observer.unobserve(domRef.current);
+        }
+      });
+    }, {
+      rootMargin: "0px 0px -50px 0px",
+      threshold: 0.1
+    });
+    
+    const { current } = domRef;
+    if (current) observer.observe(current);
+    
+    return () => {
+      if (current) observer.unobserve(current);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={domRef}
+      className={`transition-all duration-700 ease-out ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      } ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
 }
 
 function CategoryScroller({ 
@@ -140,52 +178,52 @@ export function PortfolioSection({
       {sections.map((item) => {
         if (item.type === "clients") {
           return (
-            <div key="section-clients" className="py-4 sm:py-6">
+            <FadeInSection key="section-clients" className="py-4 sm:py-6">
               <ClientHighlights clients={clients!} />
-            </div>
+            </FadeInSection>
           );
         }
 
         if (item.type === "photos") {
           return (
-            <div key="section-stills" className="w-full">
+            <FadeInSection key="section-stills" className="w-full">
               <StillsSection
                 stills={photos!}
                 title={siteSettings?.photosTitle || "Stills"}
               />
-            </div>
+            </FadeInSection>
           );
         }
 
         if (item.type === "services") {
           return (
-            <div key="section-services" className="w-full">
+            <FadeInSection key="section-services" className="w-full">
               <ServicesSection
                 eyebrow={siteSettings?.servicesEyebrow}
                 title={siteSettings?.servicesTitle}
                 subtitle={siteSettings?.servicesSubtitle}
                 itemsJson={siteSettings?.servicesItems}
               />
-            </div>
+            </FadeInSection>
           );
         }
 
         if (item.type === "about") {
           return (
-            <div key="section-about" className="w-full">
+            <FadeInSection key="section-about" className="w-full">
               <AboutSection
                 eyebrow={siteSettings?.aboutEyebrow}
                 title={siteSettings?.aboutTitle}
                 description={siteSettings?.aboutDescription}
                 pillsJson={siteSettings?.aboutPills}
               />
-            </div>
+            </FadeInSection>
           );
         }
 
         if (item.type === "cta") {
           return (
-            <div key="section-cta" className="w-full">
+            <FadeInSection key="section-cta" className="w-full">
               <CtaSection
                 eyebrow={siteSettings?.ctaEyebrow}
                 title={siteSettings?.ctaTitle}
@@ -196,13 +234,13 @@ export function PortfolioSection({
                 instagramUrl={siteSettings?.instagramUrl}
                 contactPhone={siteSettings?.contactPhone}
               />
-            </div>
+            </FadeInSection>
           );
         }
 
         const cat = item.category;
         return (
-          <div key={cat.id} className="py-5 sm:py-7 space-y-3">
+          <FadeInSection key={cat.id} className="py-5 sm:py-7 space-y-3">
             {/* Section Title with ⠿ grip icon exactly matching reference */}
             <div className="flex items-center justify-between px-[4%] pr-[5%]">
               <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2 font-sans tracking-[0.3px]">
@@ -217,7 +255,7 @@ export function PortfolioSection({
               onSelectProject={onSelectProject} 
               setSelectedProject={setSelectedProject} 
             />
-          </div>
+          </FadeInSection>
         );
       })}
 
