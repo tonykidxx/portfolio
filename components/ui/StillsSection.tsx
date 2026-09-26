@@ -146,10 +146,16 @@ export function StillsSection({ stills = [], title = "Stills" }: StillsSectionPr
   return (
     <div className="py-5 sm:py-7 space-y-3">
       {/* Título com ícone ⠿ exatamente igual às categorias de vídeo */}
-      <h2 className="text-xl sm:text-2xl font-bold text-white px-[4%] flex items-center gap-2 font-sans tracking-[0.3px]">
-        <span className="text-[#808080] text-lg select-none leading-none">⠿</span>
-        <span>{title}</span>
-      </h2>
+      <div className="flex items-center justify-between px-[4%] pr-[5%]">
+        <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2 font-sans tracking-[0.3px]">
+          <span className="text-[#808080] text-lg select-none leading-none">⠿</span>
+          <span>{title}</span>
+        </h2>
+        <div className="flex sm:hidden items-center gap-1 text-white/30 text-[10px] uppercase tracking-widest font-sans font-medium animate-pulse">
+          <span>Deslize</span>
+          <ChevronRight size={14} className="opacity-70" />
+        </div>
+      </div>
 
       {/* Carrossel horizontal de frames - começa exatamente no canto esquerdo (px-[4%]) */}
       <div className="flex gap-2 sm:gap-3 overflow-x-auto px-[4%] py-3 hide-scrollbar scroll-smooth">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ChevronRight } from "lucide-react";
 import { ProjectCard } from "./ProjectCard";
 import { VideoModal } from "./VideoModal";
 import { ClientHighlights } from "./ClientHighlights";
@@ -144,10 +145,16 @@ export function PortfolioSection({
         return (
           <div key={cat.id} className="py-5 sm:py-7 space-y-3">
             {/* Section Title with ⠿ grip icon exactly matching reference */}
-            <h2 className="text-xl sm:text-2xl font-bold text-white px-[4%] flex items-center gap-2 font-sans tracking-[0.3px]">
-              <span className="text-[#808080] text-lg select-none leading-none">⠿</span>
-              <span>{cat.name}</span>
-            </h2>
+            <div className="flex items-center justify-between px-[4%] pr-[5%]">
+              <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2 font-sans tracking-[0.3px]">
+                <span className="text-[#808080] text-lg select-none leading-none">⠿</span>
+                <span>{cat.name}</span>
+              </h2>
+              <div className="flex sm:hidden items-center gap-1 text-white/30 text-[10px] uppercase tracking-widest font-sans font-medium animate-pulse">
+                <span>Deslize</span>
+                <ChevronRight size={14} className="opacity-70" />
+              </div>
+            </div>
 
             {/* Horizontal Scroller - starts exactly at px-[4%] */}
             <div className="flex gap-2 sm:gap-3 overflow-x-auto px-[4%] py-3 hide-scrollbar scroll-smooth">

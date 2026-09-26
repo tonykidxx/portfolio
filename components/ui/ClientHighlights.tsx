@@ -43,6 +43,12 @@ export function ClientHighlights({ clients }: ClientHighlightsProps) {
           </span>
         </div>
 
+        {/* Mobile Swipe Indicator */}
+        <div className="flex sm:hidden items-center gap-1 text-white/30 text-[10px] uppercase tracking-widest font-sans font-medium animate-pulse">
+          <span>Deslize</span>
+          <ChevronRight size={14} className="opacity-70" />
+        </div>
+
         {/* Scroll Controls for Desktop */}
         <div className="hidden sm:flex items-center gap-2">
           <button
