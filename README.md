@@ -1,6 +1,6 @@
 # Candy Machine Studios — Portfólio Cinematográfico Full-Stack
 
-Aplicação web completa para exibição e gerenciamento de portfólio audiovisual, desenvolvida com **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, **Prisma ORM (SQLite)** e **NextAuth.js**.
+Aplicação web completa para exibição e gerenciamento de portfólio audiovisual, desenvolvida com **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, **Prisma ORM (PostgreSQL)** e **NextAuth.js**.
 
 ---
 
@@ -26,7 +26,7 @@ Aplicação web completa para exibição e gerenciamento de portfólio audiovisu
 
 - **Framework:** Next.js (App Router) + React + TypeScript
 - **Estilização:** Tailwind CSS v4 (Design System tokens em `app/globals.css`)
-- **Banco de Dados:** SQLite via Prisma ORM
+- **Banco de Dados:** PostgreSQL (Neon) via Prisma ORM
 - **Autenticação:** NextAuth.js (Session JWT + Credentials Provider)
 - **Ícones:** Lucide React
 
