@@ -143,7 +143,7 @@ export function PhotoGallerySection({
               <img
                 src={photo.imageUrl}
                 alt={photo.title || "Fotografia"}
-                loading="lazy"
+                loading="eager"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
               />
 

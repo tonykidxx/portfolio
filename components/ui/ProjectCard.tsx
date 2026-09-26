@@ -85,7 +85,7 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
           className={`w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 ${
             isLetterboxed ? "scale-y-[1.34] scale-x-[1.01]" : ""
           }`}
-          loading="lazy"
+          loading="eager"
         />
       ) : project.videoUrl ? (
         <video
