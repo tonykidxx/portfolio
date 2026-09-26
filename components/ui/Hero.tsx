@@ -65,11 +65,17 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
   const vimeoId = heroProject?.videoUrl ? getVimeoId(heroProject.videoUrl) : null;
   const isDirectVideo = heroProject?.videoUrl && !ytId && !vimeoId;
 
+  // O YouTube parou de suportar o parâmetro 'showinfo=0' para ocultar o título em 2018.
+  // A única forma de esconder o título do vídeo e o avatar do canal é aplicando um zoom (scale) 
+  // suficiente para que as bordas superior e inferior do iframe fiquem fora da área visível do container.
+  // Para Vimeo e vídeos diretos, usamos um scale mínimo apenas para esconder bordas subpixel.
+  const scaleClass = ytId ? "scale-[1.35]" : "scale-[1.05]";
+
   // Calculamos as classes de dimensões exatas para simular object-fit: cover 
   // com base na altura real do container (72svh no mobile, 80vh no desktop)
   const wrapperClass = isVertical
-    ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,40.5svh)] h-[max(72svh,177.77vw)] sm:w-[max(100vw,45vh)] sm:h-[max(80vh,177.77vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]"
-    : "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,128svh)] h-[max(72svh,56.25vw)] sm:w-[max(100vw,142.22vh)] sm:h-[max(80vh,56.25vw)] scale-[1.05] pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]";
+    ? `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,40.5svh)] h-[max(72svh,177.77vw)] sm:w-[max(100vw,45vh)] sm:h-[max(80vh,177.77vw)] ${scaleClass} pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]`
+    : `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,128svh)] h-[max(72svh,56.25vw)] sm:w-[max(100vw,142.22vh)] sm:h-[max(80vh,56.25vw)] ${scaleClass} pointer-events-none border-0 filter brightness-[0.80] contrast-[1.05]`;
 
   // Gerenciamento do player de fundo via YouTube API para loop contínuo sem corte e sem ícones de playlist (|<< || >>|)
   useEffect(() => {
