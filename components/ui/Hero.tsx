@@ -178,7 +178,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
   return (
     <section className="relative min-h-[60vh] sm:min-h-[80vh] flex items-end pb-20 sm:pb-24 px-[4%] bg-[#141414] overflow-hidden">
       {/* Background Video / Image Container com reprodução contínua em loop ao fundo sem som e SEM controles/ícone de pause */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden bg-black z-0">
         {/* Pôster de alta definição (renderizado enquanto o vídeo carrega) */}
         <img
           src={bgImage}
@@ -200,7 +200,7 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
         ) : vimeoId ? (
           <div className="absolute inset-0 overflow-hidden flex items-center justify-center pointer-events-none">
             <iframe
-              src={`https://player.vimeo.com/video/${vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
+              src={`https://player.vimeo.com/video/${vimeoId}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&controls=0`}
               className={wrapperClass}
               allow="autoplay; fullscreen"
             />
@@ -212,15 +212,22 @@ export function Hero({ heroProject, siteSettings, onPlayVideo }: HeroProps) {
             loop
             muted
             playsInline
+            controls={false}
+            disablePictureInPicture
+            disableRemotePlayback
             className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.80] contrast-[1.05] pointer-events-none"
+            style={{ pointerEvents: 'none' }}
           />
         ) : null}
 
+        {/* BLOQUEADOR ABSOLUTO DE CLIQUES: Impede que o iOS/Safari mostre o botão de Pause ao tocar na tela */}
+        <div className="absolute inset-0 z-10 bg-transparent" style={{ touchAction: 'none' }} />
+
         {/* Gradientes cinematográficos para garantir legibilidade dos textos e botões */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#141414]/95 via-[#141414]/50 to-transparent pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 z-20 bg-gradient-to-r from-[#141414]/95 via-[#141414]/50 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 z-20 bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent pointer-events-none" />
         {/* Fade extra forte na metade inferior para suavizar o corte do vídeo no mobile */}
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#141414] via-[#141414]/95 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 z-20 bg-gradient-to-t from-[#141414] via-[#141414]/95 to-transparent pointer-events-none" />
       </div>
 
       {/* Hero Content */}
