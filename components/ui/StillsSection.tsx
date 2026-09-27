@@ -184,6 +184,7 @@ export function StillsSection({ stills = [], title = "Stills" }: StillsSectionPr
               src={still.imageUrl}
               alt={still.title || "Frame"}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              decoding="async"
             />
 
             {/* Ícone sutil de expandir ao passar o mouse */}

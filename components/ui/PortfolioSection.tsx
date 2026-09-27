@@ -83,11 +83,16 @@ function CategoryScroller({
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
 
+  // Throttle (economizador de CPU) para não disparar 100x por segundo durante o scroll
   const checkScroll = () => {
     if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setShowLeft(scrollLeft > 20);
-      setShowRight(scrollWidth > clientWidth && scrollLeft < scrollWidth - clientWidth - 20);
+      // Usamos requestAnimationFrame para garantir que a leitura/escrita do DOM ocorra no momento ideal do navegador
+      requestAnimationFrame(() => {
+        if (!scrollRef.current) return;
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        setShowLeft(scrollLeft > 20);
+        setShowRight(scrollWidth > clientWidth && scrollLeft < scrollWidth - clientWidth - 20);
+      });
     }
   };
 
@@ -102,7 +107,7 @@ function CategoryScroller({
       <div 
         ref={scrollRef}
         onScroll={checkScroll}
-        className="flex gap-2 sm:gap-3 overflow-x-auto px-[4%] py-3 hide-scrollbar scroll-smooth"
+        className="flex gap-2 sm:gap-3 overflow-x-auto px-[4%] py-3 hide-scrollbar scroll-smooth will-change-transform"
       >
         {cat.projects.map((project: any) => (
           <ProjectCard
@@ -113,16 +118,16 @@ function CategoryScroller({
         ))}
       </div>
       {/* Glassmorphism Swipe Indicator Mobile LEFT */}
-      <div className={`absolute left-2 top-1/2 -translate-y-1/2 z-30 sm:hidden pointer-events-none transition-opacity duration-300 ${showLeft ? 'opacity-100 animate-pulse' : 'opacity-0'}`}>
-        <div className="w-10 h-10 rounded-full bg-black/[0.35] backdrop-blur-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
-          <ChevronLeft size={20} className="text-white opacity-80" />
+      <div className={`absolute left-2 top-1/2 -translate-y-1/2 z-30 sm:hidden pointer-events-none transition-opacity duration-300 ${showLeft ? 'opacity-100' : 'opacity-0'}`}>
+        <div className="w-10 h-10 rounded-full bg-black/60 flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
+          <ChevronLeft size={20} className="text-white opacity-90" />
         </div>
       </div>
 
       {/* Glassmorphism Swipe Indicator Mobile RIGHT */}
-      <div className={`absolute right-2 top-1/2 -translate-y-1/2 z-30 sm:hidden pointer-events-none transition-opacity duration-300 ${showRight ? 'opacity-100 animate-pulse' : 'opacity-0'}`}>
-        <div className="w-10 h-10 rounded-full bg-black/[0.35] backdrop-blur-sm flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.4)]">
-          <ChevronRight size={20} className="text-white opacity-80" />
+      <div className={`absolute right-2 top-1/2 -translate-y-1/2 z-30 sm:hidden pointer-events-none transition-opacity duration-300 ${showRight ? 'opacity-100' : 'opacity-0'}`}>
+        <div className="w-10 h-10 rounded-full bg-black/60 flex items-center justify-center shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
+          <ChevronRight size={20} className="text-white opacity-90" />
         </div>
       </div>
     </div>
