@@ -94,7 +94,6 @@ export function ClientHighlights({ clients }: ClientHighlightsProps) {
                   src={client.imageUrl}
                   alt={client.name}
                   className="w-full h-full rounded-full object-cover"
-                  decoding="async"
                 />
               </div>
 
