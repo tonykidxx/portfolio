@@ -42,6 +42,17 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
   const embed = project ? getVideoEmbed(project.videoUrl) : { type: "direct" as const };
   const isDirectVideo = embed.type === "direct";
 
+  // Trava o scroll do fundo da página enquanto o vídeo está aberto
+  useEffect(() => {
+    // Guarda o overflow original caso exista
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
+
   // Fecha no ESC e alterna play/pause com a barra de espaço
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
