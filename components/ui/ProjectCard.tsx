@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Play } from "lucide-react";
+import Image from "next/image";
 import {
   getYouTubeId,
   getRandomYouTubeFrame,
@@ -78,13 +79,13 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
     >
       {/* Miniatura do PRÓPRIO vídeo anexado (com preenchimento total e sem tarjas pretas) */}
       {thumbSrc ? (
-        <img
+        <Image
           src={thumbSrc}
           alt={project.title}
           onError={handleImageError}
-          loading="lazy"
-          decoding="async"
-          className={`w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 ${
+          fill
+          sizes="(max-width: 640px) 155px, (max-width: 768px) 185px, 280px"
+          className={`object-cover transition-transform duration-300 group-hover:scale-105 ${
             isLetterboxed ? "scale-y-[1.34] scale-x-[1.01]" : ""
           }`}
         />
