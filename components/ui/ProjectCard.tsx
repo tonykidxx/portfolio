@@ -70,7 +70,7 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
   return (
     <div
       onClick={() => onSelect(project)}
-      className={`group relative flex-shrink-0 cursor-pointer overflow-hidden rounded-[4px] bg-[#2a2a2a] transition-all duration-200 transform hover:scale-[1.08] hover:z-20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.8)] focus-visible:outline-2 focus-visible:outline-white ${
+      className={`group relative flex-shrink-0 cursor-pointer overflow-hidden rounded-[4px] bg-[#2a2a2a] transition-[transform,shadow] duration-200 transform hover:scale-[1.08] hover:z-20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.8)] focus-visible:outline-2 focus-visible:outline-white ${
         isVert
           ? "w-[125px] sm:w-[155px] md:w-[185px] aspect-[9/16]"
           : "w-[180px] sm:w-[230px] md:w-[280px] aspect-[16/9]"
@@ -82,6 +82,8 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
           src={thumbSrc}
           alt={project.title}
           onError={handleImageError}
+          loading="lazy"
+          decoding="async"
           className={`w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 ${
             isLetterboxed ? "scale-y-[1.34] scale-x-[1.01]" : ""
           }`}

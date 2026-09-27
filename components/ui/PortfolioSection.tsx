@@ -83,17 +83,23 @@ function CategoryScroller({
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(false);
 
+  const rafRef = useRef<number | null>(null);
+
   // Throttle (economizador de CPU) para não disparar 100x por segundo durante o scroll
   const checkScroll = () => {
-    if (scrollRef.current) {
-      // Usamos requestAnimationFrame para garantir que a leitura/escrita do DOM ocorra no momento ideal do navegador
-      requestAnimationFrame(() => {
-        if (!scrollRef.current) return;
-        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-        setShowLeft(scrollLeft > 20);
-        setShowRight(scrollWidth > clientWidth && scrollLeft < scrollWidth - clientWidth - 20);
-      });
-    }
+    if (!scrollRef.current) return;
+    if (rafRef.current !== null) return;
+    
+    rafRef.current = requestAnimationFrame(() => {
+      if (!scrollRef.current) {
+        rafRef.current = null;
+        return;
+      }
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setShowLeft(scrollLeft > 20);
+      setShowRight(scrollWidth > clientWidth && scrollLeft < scrollWidth - clientWidth - 20);
+      rafRef.current = null;
+    });
   };
 
   useEffect(() => {
@@ -107,7 +113,7 @@ function CategoryScroller({
       <div 
         ref={scrollRef}
         onScroll={checkScroll}
-        className="flex gap-2 sm:gap-3 overflow-x-auto px-[4%] py-3 hide-scrollbar scroll-smooth will-change-transform"
+        className="flex gap-2 sm:gap-3 overflow-x-auto px-[4%] py-3 hide-scrollbar scroll-smooth"
       >
         {cat.projects.map((project: any) => (
           <ProjectCard
