@@ -45,7 +45,7 @@ function FadeInSection({ children, delay = 0, className = "" }: { children: Reac
         }
       });
     }, {
-      rootMargin: "0px 0px 50px 0px", // O radar avança 50px para fora da tela, disparando a animação pouco antes de você ver
+      rootMargin: "0px 0px 0px 0px", // Dispara no exato milímetro em que a seção toca a tela
       threshold: 0
     });
     
@@ -61,7 +61,7 @@ function FadeInSection({ children, delay = 0, className = "" }: { children: Reac
     <div
       ref={domRef}
       className={`transition-all duration-700 ease-out ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
