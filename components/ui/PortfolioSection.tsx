@@ -23,6 +23,7 @@ interface PortfolioSectionProps {
       thumbUrl?: string | null;
       isVertical?: boolean;
       isPublished?: boolean;
+      order?: number;
     }[];
   }[];
   clients?: any[];
@@ -150,11 +151,13 @@ export function PortfolioSection({
 }: PortfolioSectionProps) {
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
 
-  // Filter published projects
+  // Filter published projects and sort by order
   const validCategories = categories
     .map((cat) => ({
       ...cat,
-      projects: cat.projects.filter((p) => p.isPublished !== false),
+      projects: cat.projects
+        .filter((p) => p.isPublished !== false)
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
     }))
     .filter((cat) => cat.projects.length > 0);
 
