@@ -40,19 +40,6 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
   const ytId = project?.videoUrl ? getYouTubeId(project.videoUrl) : null;
   const isShorts = project?.videoUrl ? isYouTubeShorts(project.videoUrl) : false;
   const embed = project ? getVideoEmbed(project.videoUrl) : { type: "direct" as const };
-  const isDirectVideo = embed.type === "direct";
-
-  // Trava o scroll do fundo da página enquanto o vídeo está aberto
-  useEffect(() => {
-    // Guarda o overflow original caso exista
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    
-    return () => {
-      document.body.style.overflow = originalOverflow;
-    };
-  }, []);
-
   // Fecha no ESC e alterna play/pause com a barra de espaço
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -375,7 +362,8 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] bg-black/92 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] bg-black/92 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200 overflow-y-auto overscroll-none"
+      style={{ touchAction: 'none' }}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
