@@ -55,19 +55,6 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
     }
   };
 
-  // Detecta se a imagem possui tarjas pretas padrão do YouTube (formato 4:3 com barras superior/inferior)
-  const isLetterboxed =
-    !isVert &&
-    Boolean(
-      thumbSrc?.includes("hqdefault.jpg") ||
-        thumbSrc?.includes("sddefault.jpg") ||
-        thumbSrc?.includes("hq1.jpg") ||
-        thumbSrc?.includes("hq2.jpg") ||
-        thumbSrc?.includes("hq3.jpg") ||
-        thumbSrc?.includes("0.jpg") ||
-        fallbackStep >= 2
-    );
-
   return (
     <div
       onClick={() => onSelect(project)}
@@ -85,9 +72,7 @@ export function ProjectCard({ project, onSelect }: ProjectCardProps) {
           onError={handleImageError}
           fill
           sizes="(max-width: 640px) 155px, (max-width: 768px) 185px, 280px"
-          className={`object-cover transition-transform duration-300 group-hover:scale-105 ${
-            isLetterboxed ? "scale-y-[1.34] scale-x-[1.01]" : ""
-          }`}
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
       ) : project.videoUrl ? (
         <video
